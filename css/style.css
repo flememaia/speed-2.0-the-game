@@ -7,16 +7,17 @@ body {
     text-align: center;
   }
   
-  .game-intro {
-    display: flex;
-    justify-content: space-evenly;
+  /* VERIFICAR - COMO DELETEI SOBRE AS INSTRUÇÕES DO JOGO, NÃO PRECISA SPACE-EVENLY */
+  .game-details {
+    /* display: flex;
+    justify-content: space-evenly; */
     padding: 0% 10%;
   }
 
   /* ARRUMAR */
-  #instructions {
+  /* #instructions {
     margin: 10% 20%;
-  }
+  } */
 
 /* ARRUMAR */
   /* .game-intro p {
@@ -33,7 +34,7 @@ body {
   } */
   
   body button {
-    font-size: 30px;
+    font-size: 20px;
     background-color: #870007;
     color: #fff;
     padding: 20px 40px;

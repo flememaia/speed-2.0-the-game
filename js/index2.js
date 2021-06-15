@@ -15,7 +15,7 @@ const gameOver = new Audio();
 gameOver.volume = 0.1;
 
 
-class CarPlayer {
+class VehiclePlayer {
     constructor(x, y, width, height, img) {
       this.x = x; // coordenada x
       this.y = y; // coordenada y
@@ -124,10 +124,14 @@ class Game {
     // voltar pra tela inicial? new game?
 }
 
-função startGame{
-    //Instanciar as imagens (road, CarPlayer, Obstacles 1, 2, 3)
+function playerChoice{
+  lincar com o botão... 
+}
+function startGame{
+    //Instanciar as imagens (road, VehiclePlayer, Obstacles 1, 2, 3)
 
-    //Instanciar as classes (CarPlayer, road, game)
+    // addEventListner para a escolha do jogador. dependendo da escolha, iniciar uma classe diferente de VehiclePlayer
+    //Instanciar as classes (VehiclePlayer, road, game)
 
     //invocar a função start (da classe game)
 
