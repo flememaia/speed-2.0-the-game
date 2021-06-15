@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+        <!-- Importando CSS -->
+        <link href="./css/style.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Importando os estilos prontos do Brootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" 
+        type="text/css"/>
+    
+        <!-- Importando a biblioteca de ícones do Font Awesome -->
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer"/> -->
+
+</head>
+<body>
+    <div class="game-intro">
+        <!-- ATUALIZAR LOGO GAME -->
+        <img src="xxxxx" alt="" class="logo-img" /> 
+        <br />
+        <button id="start-button">StartGame</button>
+        <p id="instructions">Use the left and right arrow to control the car!</p>
+        <!-- <img src="xxxxxx" alt="" class="arrows-img" /> PRECISA?  -->
+      </div>
+  
+      <div id="game-board">
+        <!-- Importando canvas ACHO QUE PRECISA ESTAR DENTRO DE UMA DIV...REVISAR AS DIMENSÕES. TINHA DEIXADO 400, pq tinha entendido que era o máximo...-->
+        <canvas id="the-canvas" width="400" height="400"></canvas>
+      </div>
+    
+    <!-- Importando js => LEMBRAR DA ORDEM -->
+    <!-- <script src="./js/intro.js"></script> -->
+    <script src="./js/index.js"></script>
+</body>
+</html>
