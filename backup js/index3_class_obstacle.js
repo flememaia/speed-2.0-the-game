@@ -59,6 +59,13 @@ class BackgroundImage extends GameObject
     ctx.drawImage(this.img, 0, this.y - canvas.height, this.width, this.height); // outra vem logo embaixo - descontando o tam da imagem, pra grudar um no outro
   }
 }
+//TENTATIVA DE ARRUMAR O OBSTACULO COM A CLASS OBSTACULO - Linha 63 até 68
+class Obstacle extends GameObject {
+  constructor(x, y, width, height) {
+    super(x, y, width, height);
+    this.speedY = 3;
+  }
+}
 
 class Game {
   constructor(background, player) {
@@ -112,7 +119,8 @@ class Game {
       const obsImg = new Image();
       obsImg.src = "./images/car.png";
       
-      const obstacle = new GameObject (obsImg, randomX, originY, 50, 100); 
+      const obstacle = new Obstacle (obsImg, 250, 0, 50, 50); 
+      // const obstacle = new GameObject (obsImg, randomX, originY, 50, 100); 
       
       this.obstacles.push(obstacle); // aqui eu posso jogar os demais obstáculos e fazer push do obstacle 1, 2, 3 etc
 // //       this.score++;
