@@ -2,6 +2,17 @@
 const canvas = document.getElementById("the-canvas");
 const ctx = canvas.getContext("2d");
 
+const obsImg = new Image();
+obsImg.src = "./images/car.png";
+
+const obs2Img = new Image();
+obs2Img.src = "./images/car_yellow.png";
+
+const obs3Img = new Image();
+obs3Img.src = "./images/obstacle1.png";
+
+const obsArray = [{img:obsImg, width:50, heigth: 100}, {img:obs2Img, width:50, heigth: 100}, {img:obs3Img, width:100, heigth: 100}]
+
 // pra já ter uma imagem no CANVAS antes de começar o jogo, eu preciso incluir aqui, certo?
 
 // // 2.SOM
@@ -27,7 +38,7 @@ class GameObject {
     this.img = img; 
     this.speedX = 0;
     this.speedY = 0;
-    this.health = 10;
+    this.health = 500;
   }
 
   updatePosition() {
@@ -54,28 +65,31 @@ class GameObject {
 //Calcular colisão => preciso dos dados left, right, top e bottom dos objetos e comparar
 
   left() {
-    return this.x; // lado esquerdo do objeto é a posição no x
+    return this.x;
   }
   right() {
-    return this.x + this.width; // lado direito do objeto é a posição no x + largura do objeto
+    return this.x + this.width;
   }
   top() {
-    return this.y; // lado superior do objeto é a posição no y 
+    return this.y;
   }
   bottom() {
-    return this.y + this.height; // lado inferior do objeto é a posição no y + altura do objeto
+    return this.y + this.height;
   }
 
-  // ########################################
-  // como eu uso a mesma classe para o carrinho e o obstáculo, ENTENDO que tenho que fazer essa função dentro da class Game
-  // crashWith(obstacle) {
-  //   return !(
-  //     this.bottom() < obstacle.top() ||
-  //     this.top() > obstacle.bottom() ||
-  //     this.right() < obstacle.left() ||
-  //     this.left() > obstacle.right()
-  //   );
-  // }
+  crashWith = (obstacle) => {    
+    if (!(this.bottom() < obstacle.top() || 
+      this.top() > obstacle.bottom() ||  
+      this.right() < obstacle.left() || 
+      this.left() > obstacle.right() ))
+      {
+      // crashSound.play(); // PENDENTE acrescentei o aúdio de crash aqui
+      this.health -= 1
+      console.log(this.health)
+      return true
+      }
+      return false
+}
 }
 
 class BackgroundImage extends GameObject {
@@ -95,20 +109,6 @@ class BackgroundImage extends GameObject {
     ctx.drawImage(this.img, 0, this.y - canvas.height, this.width, this.height); 
   }
 }
-
-//######################################## NÃO APLICÁVEL NO MEU CASO. OS OBSTÁCULOS SERÃO IMAGENS COMO O CARRO E PODEM TER A MESMA CLASSE DO GAMEOBJECT
-// AQUI FOI CRIADA UMA NOVA CLASSE SOMENTE PQ A FUNÇÃO DRAW SERIA DIFERENTE. O RESTO É TUDO IGUAL 
-// class Obstacle extends GameObject {
-//   constructor(x, y, width, height) {
-//     super(x, y, width, height);
-//     this.speedY = 3;
-//   }
-//   draw() {
-//     ctx.fillStyle = "red";
-//     ctx.fillRect(this.x, this.y, this.width, this.height);
-//   }
-// }
-//#######################################
 
 class Game {
   constructor(background, player) {
@@ -136,16 +136,20 @@ class Game {
 
     this.updateObstacles();
 
+    this.obstacles.forEach((obstacle) => {
+      this.player.crashWith(obstacle)
+    })
+
     this.updateScore();
+
+    this.updateHealth();
 
     this.animationId = requestAnimationFrame(this.updateGame); //se não salvarmos o "id" do loop de animação, a animação vai rodar pra sempre. "requestAnimationFrame" é nativo do js. Chama a callback, qdo a animação terminar de rodar. Chama esse método várias vezes por segundo. 
 
-    // NÃO INCLUI CRASHWITH() E UPDATE HEALTH, PQ ELAS SÃO CHAMADAS NO MÉTODO CHECK THIS GAME OVER. CERTO?
     this.checkGameOver(); // verifica se o jogo acabou em todos os frames. Se o health (resultado de crashWith) for > 0, apenas atualiza o health na tela.
   };
 
   updateObstacles = () => {
-    this.speedY = 3 
     this.frames++;
 
     for (let i = 0; i < this.obstacles.length; i++) { 
@@ -156,71 +160,28 @@ class Game {
     if (this.frames % 120 === 0) { 
       const originY = 0; 
       const minX = 50; // PENSEI EM ALTERAR DE 90 que é a grama até (500 - 90 - 50) => 360 (descontando a grama da direita + tam obs)
-      const maxX = 100; //TALVEZ POSSA SER MAIOR AQUI 
+      const maxX = 360; //TALVEZ POSSA SER MAIOR AQUI 
       const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+
+      const randomIndex = Math.floor(Math.random() * (obsArray.length));
+
+      const obstacle = new GameObject (randomX, originY, obsArray[randomIndex].width, obsArray[randomIndex].heigth, obsArray[randomIndex].img); 
+      obstacle.speedY = 3 //(positivo pq quero que desça na tela). ideal mesma velocidade Y da "road"
+
+      this.obstacles.push(obstacle); 
     }
-
-// // // ######################################
-// // // => NÃO APLICÁVEL NO MEU CASO - NÃO VOU DESENHAR NO PRÓPRIO CANVAS OBSTÁCULO. RANDOWITH é a largura dos obstáculos. minhas imagens vão ter o mesmo tamanho
-// // // //FOLGA ENTRE OS OBSTÁCULOS, PODE SER UM PARAMETRO DE DIFICULDADE.
-// // //       const minWidth = 50; // Tam mínimo do obstáculo - escolhi ser do tamanho do carro
-// // //       const maxWidth = 240; // Tam máx do obstáculo = tam total canvas (width) - 180 da grama = 320 - espaço pro carro passar. Tiramos 80, pq o carro tem 50. Se não ficaria muito apertado. 
-      
-// // //       const randomWidth = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth; // gerar o tamanho do obstáculo aleatoriamente, considerando os valores máx e mín definidos acima (50 e 240)
-// // }
-// //       const obstacle = new Obstacle(randomX, originY, randomWidth, 20);
-// // // ###########################################
-
-    const obsImg = new Image();
-    obsImg.src = "./images/obstacle.png";
-
-    const obstacle = new GameObject (randomX, originY, 50, 100, obsImg); //poderia ter iniciado no escopo global, acima. abaixo, a classe não acessaria. 
-        //se eu quiser mudar o tamanho do objeto, eu volto o randonWidth e como ele é quadrado, eu posso, colocar radonWidth e (randonWith * 2)
-    this.obstacles.push(obstacle); // aqui eu posso jogar os demais obstáculos e fazer push do obstacle 1, 2, 3 etc
 
     this.score++;// cada vez que passa por um obstáculo, aumenta o score do player
     }
 
-//########### trouxe pra cá a função verificar COLISÃO. no original estava dentro do Game Object. mas como tanto o player qto o obstacle são Game Objetc, acho que preicsa estar fora.
-// mudei o return => se bater, diminui 1 pt do player health e retorna o valor de player health p ser utilizado na GAME OVER
-    crashWith = () => {    
-      if (!(player.bottom() < obstacle.top() || 
-        player.top() > obstacle.bottom() ||  
-        player.right() < obstacle.left() || 
-        player.left() > obstacle.right() ||//ENTENDO QUE PRECISO DAS CONDIÇÕES ADICIONAIS ABAIXO 
-        player.top() < obstacle.bottom() &&  player.right() < obstacle.left() || //FLÁ
-        player.bottom() > obstacle.top() &&  player.right() < obstacle.left() || //FLÁ
-        player.top() < obstacle.bottom() &&  player.left() > obstacle.right() || //FLÁ
-        player.bottom() > obstacle.top() &&  player.right() > obstacle.left() )) //FLÁ
-        {
-        // crashSound.play(); // PENDENTE acrescentei o aúdio de crash aqui
-        return player.health -= 1
-        }
-  }
-
   updateHealth(){
     ctx.font = "30px Verdana";
     ctx.fillStyle = "white";
-    ctx.fillText(`Score: ${player.health}`, 80, 80); //AJUSTAR ONDE APARECER NA TELA
+    ctx.fillText(`Score: ${this.player.health}`, 80, 80); //AJUSTAR ONDE APARECER NA TELA
   }
-// ################################# DIFERENTE - VOU CHECAR O player.health pra dar game over
-//   checkGameOver = () => {
-//     const crashed = this.obstacles.some((obstacle) => {
-//       return this.player.crashWith(obstacle);
-//     });
-
-//     if (crashed) {
-//       crashSound.play();
-
-//       cancelAnimationFrame(this.animationId);
-
-//       this.gameOver();
-//     }
-//   };
-//############################################
 
   checkGameOver (){ // coloquei que ela chama a crashWith, e crashWith retorna o valor atualizado do player.health
-    if (this.crashWith() <= 0) {
+    if (this.player.health <= 0) {
       // gameOver.play();
 
       cancelAnimationFrame(this.animationId);
@@ -239,7 +200,7 @@ class Game {
   }
 
   gameOver() 
-  { //desenhando na tela, verificar arquivo Pedro - linha 171
+  { //desenhando na tela
     this.clear(); 
 
     const gameOverImg = new Image();
@@ -260,19 +221,16 @@ class Game {
 }
 // FUNÇÃO PARA AGRUPAR A INSTANCIALIZAÇÃO DAS CLASSES E IMAGENS PRO JOGO COMEÇAR
 function startGame() {
-  // Instanciando todas as imagens
-  const bgImg = new Image(); // const img é literalmente o arquivo imagem
-  bgImg.src = "./images/road.png"; // IMAGEM NÃO TÁ FUNCIONANDO NO index.js => verificar se é problema da imagem ou sintaxe, caminho????
+
+  const bgImg = new Image(); 
+  bgImg.src = "./images/road.png"; // MUDAR
 
   const carImg = new Image();
-  carImg.src = "./images/car.png";
+  carImg.src = "./images/car_yellow.png";
 
-// Instanciando as classes 
-// aqui é a img com o comportamento no jogo (esteira), por isso uma nova variável e não reaproveita a bgImg
   const backgroundImage = new BackgroundImage (0, 0, canvas.width, canvas.height, bgImg);
 
 // carrinhos - VERIFICA DIMENSÕES DE ACORDO COM AS MINHAS FIGURAS
-    // aqui que eu diferencio os players
   const player = new GameObject (250 - 25, canvas.height - 120, 50, 100, carImg);
     // novos tipos de players - VERIFICA DIMENSÕES E IMAGEM (TAM IMAGEM - respeitar a proporção da imagem)
 //   const player1 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
@@ -299,10 +257,6 @@ function startGame() {
     game.player.speedX = 0;
   });
 }
-
-document.addEventListener("click", () => {
-    startGame();
-  });
 
 window.onload = () => {
   document.getElementById("start-button").onclick = () => {
