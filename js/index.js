@@ -2,27 +2,43 @@
 const canvas = document.getElementById("the-canvas");
 const ctx = canvas.getContext("2d");
 
+const initImg = new Image();
+initImg.src = "./images/game_over.png"; //IMAGEM INICIAL NÃO ESTÁ FUNCIONANDO 
+
+ctx.drawImage(initImg , 0, 0, 500, 700);
+
 const obsImg = new Image();
-obsImg.src = "./images/car.png";
+obsImg.src = "./images/obs_3cones.png";
 
 const obs2Img = new Image();
-obs2Img.src = "./images/car_yellow.png";
+obs2Img.src = "./images/obs_cone.png";
 
-const obs3Img = new Image();
-obs3Img.src = "./images/obstacle1.png";
+// const obs3Img = new Image();
+// obs3Img.src = "#";
 
-const obsArray = [{img:obsImg, width:50, heigth: 100}, {img:obs2Img, width:50, heigth: 100}, {img:obs3Img, width:100, heigth: 100}]
+// const obs4Img = new Image();
+// obs4Img.src = "./images/obs_stop.png";
+
+const obs5Img = new Image();
+obs5Img.src = "./images/obs_warning.png";
+
+const obs6Img = new Image();
+obs6Img.src = "./images/car.png";
+
+const obsArray = [
+  {img:obsImg, width:300, heigth: 300}, 
+  {img:obs2Img, width:100, heigth: 100}, 
+  // {img:obs4Img, width:100, heigth: 200},
+  {img:obs5Img, width:150, heigth: 150},
+  {img:obs6Img, width:50, heigth: 100}
+]
 
 // pra já ter uma imagem no CANVAS antes de começar o jogo, eu preciso incluir aqui, certo?
 
 // // 2.SOM
-// const crashSound = new Audio(); 
-// // crashSound.src = "PENDENTE SOM";
-// crashSound.volume = 0.1;
-
-// const newLife = new Audio(); 
-// // crashSound.src = "PENDENTE SOM";
-// newLife.volume = 0.1;
+const crashSound = new Audio(); 
+crashSound.src = "./sounds/car-crash.wav";
+crashSound.volume = 0.1;
 
 // const gameOver = new Audio(); 
 // // crashSound.src = "PENDENTE SOM";
@@ -47,13 +63,13 @@ class GameObject {
     // AJUSTAR DE ACORDO COM A MINHA IMAGEM ROAD . IDEAL TER CARRINHOS DO MESMO TAMANHO, SE NÃO IMPACTA AQUI. 
     // 10 e 40 são valores pro carro não sair do asfalto, e parar alguns pixels antes de chegar na grama
 
-    // if (this.x <= this.width - 10) { //this.width é a largura do objeto (carrinho)
-    //   this.x = this.width - 10;
-    // }
+    if (this.x <= this.width - 10) { //this.width é a largura do objeto (carrinho)
+      this.x = this.width - 10;
+    }
 
-    // if (this.x >= canvas.width - (this.width + 40)) {
-    //   this.x = canvas.width - (this.width + 40);
-    // }
+    if (this.x >= canvas.width - (this.width + 40)) {
+      this.x = canvas.width - (this.width + 40);
+    }
 
     this.y += this.speedY;
   }
@@ -83,9 +99,8 @@ class GameObject {
       this.right() < obstacle.left() || 
       this.left() > obstacle.right() ))
       {
-      // crashSound.play(); // PENDENTE acrescentei o aúdio de crash aqui
+      crashSound.play(); 
       this.health -= 1
-      console.log(this.health)
       return true
       }
       return false
@@ -95,7 +110,7 @@ class GameObject {
 class BackgroundImage extends GameObject {
   constructor(x, y, width, height, img) {
     super(x, y, width, height, img);
-    this.speedY = 1; 
+    this.speedY = 3; 
   }
 
   updatePosition() {
@@ -157,16 +172,16 @@ class Game {
       this.obstacles[i].draw();
     }
 
-    if (this.frames % 120 === 0) { 
+    if (this.frames % 60 === 0) { 
       const originY = 0; 
-      const minX = 50; // PENSEI EM ALTERAR DE 90 que é a grama até (500 - 90 - 50) => 360 (descontando a grama da direita + tam obs)
-      const maxX = 360; //TALVEZ POSSA SER MAIOR AQUI 
+      const minX = 90; 
+      const maxX = 300; 
       const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
 
       const randomIndex = Math.floor(Math.random() * (obsArray.length));
 
       const obstacle = new GameObject (randomX, originY, obsArray[randomIndex].width, obsArray[randomIndex].heigth, obsArray[randomIndex].img); 
-      obstacle.speedY = 3 //(positivo pq quero que desça na tela). ideal mesma velocidade Y da "road"
+      obstacle.speedY = 8 //(positivo pq quero que desça na tela). ideal mesma velocidade Y da "road"
 
       this.obstacles.push(obstacle); 
     }
@@ -175,12 +190,12 @@ class Game {
     }
 
   updateHealth(){
-    ctx.font = "30px Verdana";
-    ctx.fillStyle = "white";
-    ctx.fillText(`Score: ${this.player.health}`, 80, 80); //AJUSTAR ONDE APARECER NA TELA
+    ctx.font = "25px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText(`Your Life: ${this.player.health}`, 60, 75); 
   }
 
-  checkGameOver (){ // coloquei que ela chama a crashWith, e crashWith retorna o valor atualizado do player.health
+  checkGameOver (){ 
     if (this.player.health <= 0) {
       // gameOver.play();
 
@@ -194,9 +209,9 @@ class Game {
   };
 
   updateScore() {
-    ctx.font = "30px Verdana";
-    ctx.fillStyle = "white";
-    ctx.fillText(`Score: ${this.score}`, 80, 40); // ARRUMAR POSIÇÃO (80,40) DE ACORDO COM A MINHA ROAD
+    ctx.font = "25px Verdana";
+    ctx.fillStyle = "black";
+    ctx.fillText(`Score: ${this.score}`, 60, 40); 
   }
 
   gameOver() 
@@ -204,34 +219,38 @@ class Game {
     this.clear(); 
 
     const gameOverImg = new Image();
-    gameOverImg.src = "./images/car.png";
+    gameOverImg.src = "./images/game_over.png"; // outras imagens aparecem
 
-    //posso desenhar direto a imagem, não preciso criar uma classe => TESTE PEDRO OK 
-    ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(gameOverImg, 0, 0, 500, 700);
 
     ctx.font = "30px Verdana";
     ctx.fillStyle = "white";
-    ctx.fillText(`Your Final Score: ${this.score}`, canvas.width / 6, canvas.height);
+    ctx.fillText(`Your Final`, 225, 550);
+    ctx.fillText(`Score: ${this.score}`, 225, 600);
   }
 
-// Limpar a tela toda (antes de desenhar de novo)
   clear = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // limpar a tela toda
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
   };
 }
-// FUNÇÃO PARA AGRUPAR A INSTANCIALIZAÇÃO DAS CLASSES E IMAGENS PRO JOGO COMEÇAR
+
 function startGame() {
 
   const bgImg = new Image(); 
-  bgImg.src = "./images/road.png"; // MUDAR
+  bgImg.src = "./images/road.png";
 
   const carImg = new Image();
-  carImg.src = "./images/car_yellow.png";
+  carImg.src = "./images/foguete.png";
+
+  // const carImg = new Image();
+  // carImg.src = "./images/scooter.png";
+
+  // const carImg = new Image();
+  // carImg.src = "./images/car_yellow.png";
 
   const backgroundImage = new BackgroundImage (0, 0, canvas.width, canvas.height, bgImg);
 
-// carrinhos - VERIFICA DIMENSÕES DE ACORDO COM AS MINHAS FIGURAS
-  const player = new GameObject (250 - 25, canvas.height - 120, 50, 100, carImg);
+  const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, carImg);
     // novos tipos de players - VERIFICA DIMENSÕES E IMAGEM (TAM IMAGEM - respeitar a proporção da imagem)
 //   const player1 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
 //   const player2 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
@@ -263,3 +282,12 @@ window.onload = () => {
     startGame();
   };
 }
+
+// scooterBtn = document.getElementById("scooter-button")
+
+// scooterBtn.addEventListener("click", () => {
+
+// }
+// <button id="scooter-button"><img src= "./images/scooter.png"/>Quero só experimentar, vou de leve...</button>
+// <button id="car-button">Quero potência, vou de Camaro!</button>
+// <button id="rocket-button">Estou prontx, quero emoção!</button>

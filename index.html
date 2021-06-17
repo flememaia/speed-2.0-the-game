@@ -23,27 +23,15 @@
 <body>
       <!-- QUERO INCLUIR LOGO / FIGURA CANVAS PRO GAME BOARD INICIAL -->
       <div id="game-board"> 
-        <!-- Importando canvas ACHO QUE PRECISA ESTAR DENTRO DE UMA DIV...REVISAR AS DIMENSÕES. TINHA DEIXADO 400, pq tinha entendido que era o máximo...-->
+        <img id="initial-screen" src="#"/>
         <canvas id="the-canvas" width="500" height="700"></canvas>
       </div>
 
       <div class="player-customization">
         <p id="instructions2">Pick your vehicle!</p>
-        <!--  quero colocar a figura como botão. Consigo? ou melhor colocar um botão no que seria a legenda? -->
-        <figure> => BOTÃO => ID  PARA CADA UM DOS BOTOES => EVENT LISTENER NOS 3 => START GAME COM A IMAGEM CORRESPONDENTE       
-          <img class="xxxxx" src="#" alt="PATINETE"/>
-          <figcaption>Quero só experimentar, vou de passeio no parque</figcaption>
-        </figure>
-        <figure>        
-          <img class="xxxxx" src="#" alt="xxxxxxxxxxxx"/>
-          <figcaption>Quero potência, vou de Ferrari!</figcaption>
-        </figure>
-        <figure>        
-          <img class="xxxxx" src="#" alt="SKATE E UM AVATAR"/>
-          <figcaption>Estou prontx, quero emoção!</figcaption>
-        </figure>
-        <!-- input enter your name e no final utilizar essa info -->
-        <!-- com emoção ou começando de boa.... => mudando a quantidade de obstáculos -->
+          <button id="scooter-button"><img src= "./images/scooter.png"/>Quero só experimentar, vou de leve...</button>
+          <button id="car-button">Quero potência, vou de Camaro!</button>
+          <button id="rocket-button">Estou prontx, quero emoção!</button>
       </div>
       <!-- ARRUMAR LAYOUT  -->
       <div class="game-details">
