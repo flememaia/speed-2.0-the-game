@@ -227,7 +227,7 @@ class Game {
     this.clear(); 
 
     const gameOverImg = new Image();
-    gameOverImg.src = "./images/game_over.png"; // outras imagens aparecem
+    gameOverImg.src = "./images/game_over.png";
 
     ctx.drawImage(gameOverImg, 0, 0, 500, 700);
 
@@ -247,28 +247,9 @@ function startGame(player) { //ALTEREI
   const bgImg = new Image(); 
   bgImg.src = "./images/road.png";
 
-  // //ALTEREI
-  // const carImg = new Image();
-  // carImg.src = "./images/foguete.png";//ALTEREI
-
-  // const carImg = new Image();
-  // carImg.src = "./images/scooter.png";
-
-  // const carImg = new Image();
-  // carImg.src = "./images/car_yellow.png";
-
   const backgroundImage = new BackgroundImage (0, 0, canvas.width, canvas.height, bgImg);
 
-  //ALTEREI
-  // const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, carImg);// ALTEREI
-    // novos tipos de players - VERIFICA DIMENSÕES E IMAGEM (TAM IMAGEM - respeitar a proporção da imagem)
-//   const player1 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
-//   const player2 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
-
   const game = new Game(backgroundImage, player); 
-    // novos tipos de players
-//   const game = new Game(backgroundImage, player1);
-//   const game = new Game(backgroundImage, player2);
      
   game.start(); // chama a primeira vez a função updateGame
 
@@ -288,12 +269,6 @@ function startGame(player) { //ALTEREI
 
 window.onload = () => {
   ctx.drawImage(initImg , 0, 0, 500, 700);
-
-  // scooterBtn = document.getElementById("scooter-button")
-
-  // scooterBtn.addEventListener("click", () => {
-  // const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, rocketImg);
-  // })
 
   document.getElementById("scooter-button").onclick = () => {
     const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, scooterImg); 
