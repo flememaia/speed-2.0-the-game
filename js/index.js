@@ -2,11 +2,21 @@
 const canvas = document.getElementById("the-canvas");
 const ctx = canvas.getContext("2d");
 
+//IMAGEM INICIAL
 const initImg = new Image();
-initImg.src = "./images/game_over.png"; //IMAGEM INICIAL NÃO ESTÁ FUNCIONANDO 
+initImg.src = "./images/instructions.png"; 
 
-ctx.drawImage(initImg , 0, 0, 500, 700);
+//PLAYERS OPTION
+  const rocketImg = new Image();
+  rocketImg.src = "./images/foguete.png";
 
+  const scooterImg = new Image();
+  scooterImg.src = "./images/scooter.png";
+
+  const carImg = new Image();
+  carImg.src = "./images/car_yellow.png";
+
+  //OBSTÁCULOS
 const obsImg = new Image();
 obsImg.src = "./images/obs_3cones.png";
 
@@ -32,8 +42,6 @@ const obsArray = [
   {img:obs5Img, width:150, heigth: 150},
   {img:obs6Img, width:50, heigth: 100}
 ]
-
-// pra já ter uma imagem no CANVAS antes de começar o jogo, eu preciso incluir aqui, certo?
 
 // // 2.SOM
 const crashSound = new Audio(); 
@@ -234,13 +242,14 @@ class Game {
   };
 }
 
-function startGame() {
+function startGame(player) { //ALTEREI
 
   const bgImg = new Image(); 
   bgImg.src = "./images/road.png";
 
-  const carImg = new Image();
-  carImg.src = "./images/foguete.png";
+  // //ALTEREI
+  // const carImg = new Image();
+  // carImg.src = "./images/foguete.png";//ALTEREI
 
   // const carImg = new Image();
   // carImg.src = "./images/scooter.png";
@@ -250,12 +259,12 @@ function startGame() {
 
   const backgroundImage = new BackgroundImage (0, 0, canvas.width, canvas.height, bgImg);
 
-  const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, carImg);
+  //ALTEREI
+  // const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, carImg);// ALTEREI
     // novos tipos de players - VERIFICA DIMENSÕES E IMAGEM (TAM IMAGEM - respeitar a proporção da imagem)
 //   const player1 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
 //   const player2 = new GameObject(250 - 25, canvas.height - 120, 50, 100, xxxxImg);
 
-  // ACREDITO QUE PRECISO COLOCAR UM IF NO BOTÃO QUE A PESSOA ESCOLHEU O PLAYER
   const game = new Game(backgroundImage, player); 
     // novos tipos de players
 //   const game = new Game(backgroundImage, player1);
@@ -278,16 +287,31 @@ function startGame() {
 }
 
 window.onload = () => {
-  document.getElementById("start-button").onclick = () => {
-    startGame();
+  ctx.drawImage(initImg , 0, 0, 500, 700);
+
+  // scooterBtn = document.getElementById("scooter-button")
+
+  // scooterBtn.addEventListener("click", () => {
+  // const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, rocketImg);
+  // })
+
+  document.getElementById("scooter-button").onclick = () => {
+    const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, scooterImg); 
+    startGame(player);
   };
+
+  document.getElementById("car-button").onclick = () => {
+    const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, carImg); 
+    startGame(player);
+  };
+
+  document.getElementById("rocket-button").onclick = () => {
+    const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, rocketImg); 
+    startGame(player);
+  };
+
+  //ORIGINAL BOTÃO START
+  // document.getElementById("start-button").onclick = () => {
+  //   startGame(player);
+  // };
 }
-
-// scooterBtn = document.getElementById("scooter-button")
-
-// scooterBtn.addEventListener("click", () => {
-
-// }
-// <button id="scooter-button"><img src= "./images/scooter.png"/>Quero só experimentar, vou de leve...</button>
-// <button id="car-button">Quero potência, vou de Camaro!</button>
-// <button id="rocket-button">Estou prontx, quero emoção!</button>

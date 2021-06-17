@@ -1,71 +1,66 @@
 #the-canvas{
-    border: 1px solid black;
+    display: flex;
+    justify-content: center;
 }
+
+
 /* #initial-screen{
   display: flex;
   justify-content: center;
 } */
 
 body {
-    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bolder;
+    font-size: 30px;
+    color: #fff;
     text-align: center;
   }
-  
-  /* VERIFICAR - COMO DELETEI SOBRE AS INSTRUÇÕES DO JOGO, NÃO PRECISA SPACE-EVENLY */
-  .game-details {
-    /* display: flex;
-    justify-content: space-evenly; */
-    padding: 0% 10%;
-  }
 
-  /* ARRUMAR */
-  /* #instructions {
-    margin: 10% 20%;
-  } */
-
-/* ARRUMAR */
-  /* .game-intro p {
-    font-size: 18px;
-    font-family: "Verdana"
-  } */
+#background-image{
+  background-image: url("../images/bgImg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: auto;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; */
+}
   
-  /* .logo-img {
-    width: 350px;
-  } */
-  
-  /* .arrows-img {
-    width: 150px;
-  } */
-
+#instructions{
+  margin: 30px;
+}
   img {
     width: 15%;
     height: auto;
   }
   
-  .player-customization button {
-    font-size: 20px;
-    background-color: rgb(165, 158, 158);
-    color: #fff;
-    padding: 20px 40px;
-    border: 0;
-    box-shadow: 0;
-    border-radius: 5px;
-    margin-bottom: 20px;
+  #container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
 
-  #start-button {
+  .player-customization button {
     font-size: 20px;
-    background-color: #870007;
-    color: #fff;
+    background-color: white;
+    color: black;
     padding: 20px 40px;
     border: 0;
     box-shadow: 0;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin: 20px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  
+
   #game-board {
       display: flex;
       justify-content: center;
-      padding: 20px 0px;
+      padding: 40px 0px;
   }
