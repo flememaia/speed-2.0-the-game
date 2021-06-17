@@ -1,6 +1,7 @@
 # Introduction
 ## What is speed 2.0?
-📵 Speed 2.0 is a race "car" game for computers only for now. *A version for mobile is planned.* 
+📵 Speed 2.0 is a race "car" game for computers only for now. 
+🚧  Mobile Version: pending  🚧
 🎯 Your should deviate from the obstacles to continuing increasing your score and playing. When you are hit by a obstacle, *"your life score"* decrease. The game ends when *"your life score"* is finished. 
 
 ## How does it work?
@@ -21,7 +22,12 @@ I'm a pharmacist by graduation, with MBA in Project Management and current, an I
 
 ## Play Now! 
 Click [HERE](https://flememaia.github.io/speed-2.0-the-game/) to play!
-<iframe src="https://giphy.com/embed/dUZM9K7oTfftKwu3qd" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/nfl-avery-williamson-dUZM9K7oTfftKwu3qd">via GIPHY</a></p>
+![Alt Text] (https://media.giphy.com/media/1xOPBsQZAr3W0NvdX4/giphy.gif)
+
+## 🛠 Tech used 
+JavaScript
+HTML
+CSS
 
 ## Find out more about this project 
 You can find more here!
