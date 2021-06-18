@@ -53,7 +53,7 @@ Click [HERE](https://flememaia.github.io/speed-2.0-the-game/) to play!
 
  - JavaScript
  - HTML
- - CSS - Yes, I know it need some (or a lot of) improvement...
+ - CSS - Yes, I know it still needs some (or a lot of) improvement...
 
 ![CSS feelings](https://media.giphy.com/media/YFkpsHWCsNUUo/giphy.gif)
 
