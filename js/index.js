@@ -2,32 +2,26 @@
 const canvas = document.getElementById("the-canvas");
 const ctx = canvas.getContext("2d");
 
-//IMAGEM INICIAL
+//Initial image 
 const initImg = new Image();
 initImg.src = "./images/instructions.png"; 
 
-//PLAYERS OPTION
-  const rocketImg = new Image();
-  rocketImg.src = "./images/foguete.png";
+//Players Option
+const rocketImg = new Image();
+rocketImg.src = "./images/foguete.png";
 
-  const scooterImg = new Image();
-  scooterImg.src = "./images/scooter.png";
+const scooterImg = new Image();
+scooterImg.src = "./images/scooter.png";
 
-  const carImg = new Image();
-  carImg.src = "./images/car_yellow.png";
+const carImg = new Image();
+carImg.src = "./images/car_yellow.png";
 
-  //OBSTÁCULOS
+//Obstacles
 const obsImg = new Image();
 obsImg.src = "./images/obs_3cones.png";
 
 const obs2Img = new Image();
 obs2Img.src = "./images/obs_cone.png";
-
-// const obs3Img = new Image();
-// obs3Img.src = "#";
-
-// const obs4Img = new Image();
-// obs4Img.src = "./images/obs_stop.png";
 
 const obs5Img = new Image();
 obs5Img.src = "./images/obs_warning.png";
@@ -38,19 +32,18 @@ obs6Img.src = "./images/car.png";
 const obsArray = [
   {img:obsImg, width:300, heigth: 300}, 
   {img:obs2Img, width:100, heigth: 100}, 
-  // {img:obs4Img, width:100, heigth: 200},
   {img:obs5Img, width:150, heigth: 150},
   {img:obs6Img, width:50, heigth: 100}
 ]
 
-// // 2.SOM
+// AUDIO
 const crashSound = new Audio(); 
 crashSound.src = "./sounds/car-crash.wav";
 crashSound.volume = 0.1;
 
-// const gameOver = new Audio(); 
-// // crashSound.src = "PENDENTE SOM";
-// gameOver.volume = 0.1;
+const gameOver = new Audio(); 
+gameOver.src = "./sounds/game_over.mp3";
+gameOver.volume = 0.1;
 
 
 class GameObject {
@@ -68,14 +61,11 @@ class GameObject {
   updatePosition() {
     this.x += this.speedX;
 
-    // AJUSTAR DE ACORDO COM A MINHA IMAGEM ROAD . IDEAL TER CARRINHOS DO MESMO TAMANHO, SE NÃO IMPACTA AQUI. 
-    // 10 e 40 são valores pro carro não sair do asfalto, e parar alguns pixels antes de chegar na grama
-
-    if (this.x <= this.width - 10) { //this.width é a largura do objeto (carrinho)
+    if (this.x <= this.width - 10) { // descontando valores pro carro não sair do asfalto
       this.x = this.width - 10;
     }
 
-    if (this.x >= canvas.width - (this.width + 40)) {
+    if (this.x >= canvas.width - (this.width + 40)) { // descontando valores pro carro não sair do asfalto
       this.x = canvas.width - (this.width + 40);
     }
 
@@ -85,8 +75,6 @@ class GameObject {
   draw() {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
-
-//Calcular colisão => preciso dos dados left, right, top e bottom dos objetos e comparar
 
   left() {
     return this.x;
@@ -126,7 +114,7 @@ class BackgroundImage extends GameObject {
     this.y %= canvas.height; 
   }
 
-  // ESTEIRA, ONDE A MÁGICA ACONTECE => TEMOS 2 IMG SEMPRE, 
+  // ESTEIRA 
   draw() {
     ctx.drawImage(this.img, 0, this.y, this.width, this.height); 
     ctx.drawImage(this.img, 0, this.y - canvas.height, this.width, this.height); 
@@ -147,15 +135,15 @@ class Game {
     this.updateGame(); 
   };
 
-// loop principal do jogo. ele que vai fazeR rodar a cada frame, dando a impressão de movimento.
+// loop principal do jogo. 
   updateGame = () => {
     this.clear();
 
     this.background.updatePosition();
     this.background.draw();
 
-    this.player.updatePosition(); // movimenta o carrinho de acordo com a velocidade (somente no eixo x)
-    this.player.draw(); // depois de movimentar => redesenho
+    this.player.updatePosition(); 
+    this.player.draw(); 
 
     this.updateObstacles();
 
@@ -167,9 +155,9 @@ class Game {
 
     this.updateHealth();
 
-    this.animationId = requestAnimationFrame(this.updateGame); //se não salvarmos o "id" do loop de animação, a animação vai rodar pra sempre. "requestAnimationFrame" é nativo do js. Chama a callback, qdo a animação terminar de rodar. Chama esse método várias vezes por segundo. 
+    this.animationId = requestAnimationFrame(this.updateGame); 
 
-    this.checkGameOver(); // verifica se o jogo acabou em todos os frames. Se o health (resultado de crashWith) for > 0, apenas atualiza o health na tela.
+    this.checkGameOver(); 
   };
 
   updateObstacles = () => {
@@ -189,12 +177,12 @@ class Game {
       const randomIndex = Math.floor(Math.random() * (obsArray.length));
 
       const obstacle = new GameObject (randomX, originY, obsArray[randomIndex].width, obsArray[randomIndex].heigth, obsArray[randomIndex].img); 
-      obstacle.speedY = 8 //(positivo pq quero que desça na tela). ideal mesma velocidade Y da "road"
+      obstacle.speedY = 8 
 
       this.obstacles.push(obstacle); 
     }
 
-    this.score++;// cada vez que passa por um obstáculo, aumenta o score do player
+    this.score++;
     }
 
   updateHealth(){
@@ -205,13 +193,13 @@ class Game {
 
   checkGameOver (){ 
     if (this.player.health <= 0) {
-      // gameOver.play();
+      gameOver.play();
 
       cancelAnimationFrame(this.animationId);
 
       this.gameOver();
     }
-    else {//se não der gameOver, vai atualizando o health na tela.
+    else {
       this.updateHealth()
     }
   };
@@ -223,7 +211,7 @@ class Game {
   }
 
   gameOver() 
-  { //desenhando na tela
+  { 
     this.clear(); 
 
     const gameOverImg = new Image();
@@ -242,7 +230,7 @@ class Game {
   };
 }
 
-function startGame(player) { //ALTEREI
+function startGame(player) { 
 
   const bgImg = new Image(); 
   bgImg.src = "./images/road.png";
@@ -251,9 +239,9 @@ function startGame(player) { //ALTEREI
 
   const game = new Game(backgroundImage, player); 
      
-  game.start(); // chama a primeira vez a função updateGame
+  game.start(); 
 
-  document.addEventListener("keydown", (event) => {// recebe o evento
+  document.addEventListener("keydown", (event) => {
     if (event.code === "ArrowLeft") { 
       game.player.speedX = -3; 
     } else if (event.code === "ArrowRight") {
@@ -261,7 +249,6 @@ function startGame(player) { //ALTEREI
     }
   });
 
-  // carrinho parar de andar, se pararmos de pressionar a tecla.  
   document.addEventListener("keyup", () => {
     game.player.speedX = 0;
   });
@@ -284,9 +271,4 @@ window.onload = () => {
     const player = new GameObject (250 - 60, canvas.height - 120, 100, 100, rocketImg); 
     startGame(player);
   };
-
-  //ORIGINAL BOTÃO START
-  // document.getElementById("start-button").onclick = () => {
-  //   startGame(player);
-  // };
 }
